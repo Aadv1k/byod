@@ -1,11 +1,5 @@
 import {describe, test} from '@jest/globals';
 
-describe("if the stemmer works", () => {
-  test.todo("bitcoin pricing data 2023");
-  test.todo("bitcoin price 2023");
-  test.todo("btc price 2023")
-})
-
 describe("if the query parser works", () => {
   test.todo(`news data include:"covid","coronavirus"`)
   test.todo(`covid news data -site:cnet.com after:2019`)
