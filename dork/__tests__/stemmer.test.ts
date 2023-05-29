@@ -24,7 +24,6 @@ describe("tests for the porter stemmer implementation", () => {
 
         { input: "apple", expected: "apple" },
         { input: "blue", expected: "blue" }
-
     ];
 
     testCases.forEach(({ input, expected }) => {

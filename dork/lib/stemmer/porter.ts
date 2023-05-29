@@ -157,7 +157,7 @@ function step4(word: string): string {
     "ance": "",
     "ence": "",
     // NOTE: NON-STANDARD
-    // "er": "",
+    "er": "",
     "ic": "",
     "able": "",
     "ible": "",
@@ -187,5 +187,3 @@ export default function stem(word: string): string {
   let stemmed = stemmed4;
   return stemmed;
 }
-
-console.log(stem("horses"));
