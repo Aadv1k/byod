@@ -1,0 +1,33 @@
+{
+  "name": "@byod/dork",
+  "version": "0.0.0",
+  "description": "the Natural-DSL parser for an extensible search feature",
+  "keywords": [
+    "nlp",
+    "search",
+    "typescript"
+  ],
+  "author": "aadv1k <aadv1k@outlook.com>",
+  "homepage": "https://github.com/Aadv1k/byod#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aadv1k/byod.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "bugs": {
+    "url": "https://github.com/Aadv1k/byod/issues"
+  }
+}
