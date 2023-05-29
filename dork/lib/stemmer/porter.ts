@@ -6,14 +6,14 @@ function isVowel(letter: string): boolean {
   return "aeiou".includes(letter)
 }
 
-function substituteKeyWithPair(subs: { [key: string]: string }, word: string): string | null {
+function substituteKeyWithPair(subs: { [key: string]: string }, word: string): string {
   const keys = Object.keys(subs);
   for (const key of keys) {
     if (!word.endsWith(key)) continue;
     const prefix = word.substring(0, word.indexOf(key));
     return prefix + subs[key];
   }
-  return null;
+  return word;
 }
 
 function measure(word: string): number {
@@ -62,22 +62,18 @@ function step1A(word: string): string {
 
 function step1BNext(word: string): string {
   const subs: { [key: string]: string } = {
+    "eat": "eat",
     "at": "ate",
     "bl": "ble",
     "iz": "ize",
     "s": "",
   };
 
-  const val = substituteKeyWithPair(subs, word);
-  if (val) {
-    return val;
-  }
-
+  let val = substituteKeyWithPair(subs, word)
   if (hasDoubleConsonant(word)) {
-    return word.substring(0, word.length - 1);
+    return val.substring(0, word.length - 1);
   }
-
-  return word;
+  return val;
 }
 
 function step1B(word: string): string {
@@ -90,21 +86,25 @@ function step1B(word: string): string {
   }
 
   if (word.endsWith("ed") && containsVowel(word, "ed")) {
-    return step1BNext(word.substring(0, word.indexOf("ed")));
+    return step1BNext(
+        word.substring(0, word.length - 2)
+    );
   }
 
   if (word.endsWith("ing") && containsVowel(word, "ing")) {
-    return step1BNext(word.substring(0, word.indexOf("ing")));
+    return step1BNext(
+        word.substring(0, word.length - 3)
+    );
   }
 
   return word;
 }
 
 function step1C(word: string): string {
-   if (containsVowel(word)) {
-      return word.substring(0, word.length - 1) + "i";
-   }
-   return word;
+  if (word.length > 2 && /[aeiou]/.test(word[word.length - 2]) && word.endsWith("y")) {
+    word = word.slice(0, -1) + "i";
+  }
+  return word;
 }
 
 function step2(word: string): string {
@@ -180,7 +180,10 @@ function step4(word: string): string {
 
 
 export default function stem(word: string): string {
-  let stem1 =  step1B(step1A(word));
-  let stem2 = step2(stem1);
-  return stem1 ?? word;
+  let stemmed1 = step1C(step1B(step1A(word)));
+  let stemmed2 = step2(stemmed1)
+  let stemmed3 = step3(stemmed2)
+  let stemmed4 = step4(stemmed3)
+  let stemmed = stemmed4;
+  return stemmed;
 }
