@@ -10,7 +10,7 @@ function substituteKeyWithPair(subs: { [key: string]: string }, word: string): s
   const keys = Object.keys(subs);
   for (const key of keys) {
     if (!word.endsWith(key)) continue;
-    const prefix = word.substring(0, word.indexOf(key));
+    const prefix = word.substring(0, word.lastIndexOf(key));
     return prefix + subs[key];
   }
   return word;
@@ -52,33 +52,37 @@ function endsWithCVC(stem: string): boolean {
 
 function step1A(word: string): string {
   const subs: { [key: string]: string } = {
-    "sses": "ss",
-    "ies": "i",
-    "ss": "ss",
-    "s": "",
+    sses: "ss",
+    ies: "i",
+    ss: "ss",
+    es: "",
+    s: "",
+
+   // NOTE: this is NON-STANDARD
+   est: "",
   };
-  return substituteKeyWithPair(subs, word) || word;
+  let stemmed = substituteKeyWithPair(subs, word);
+  return stemmed;
 }
 
 function step1BNext(word: string): string {
   const subs: { [key: string]: string } = {
-    "eat": "eat",
-    "at": "ate",
-    "bl": "ble",
-    "iz": "ize",
-    "s": "",
+    eat: "eat",
+    at: "ate",
+    bl: "ble",
+    iz: "ize",
+    s: ""
   };
 
-  let val = substituteKeyWithPair(subs, word)
   if (hasDoubleConsonant(word)) {
-    return val.substring(0, word.length - 1);
+    return word.substring(0, word.length - 1);
+  } else {
+    return substituteKeyWithPair(subs, word);
   }
-  return val;
 }
 
 function step1B(word: string): string {
   const m = measure(word);
-
   if (m > 0 && word.endsWith("eed")) {
     const prefix = word.substring(0, word.indexOf("eed"));
     if (prefix === word) return word;
@@ -86,15 +90,11 @@ function step1B(word: string): string {
   }
 
   if (word.endsWith("ed") && containsVowel(word, "ed")) {
-    return step1BNext(
-        word.substring(0, word.length - 2)
-    );
+    return step1BNext(word.substring(0, word.indexOf("ed")));
   }
 
   if (word.endsWith("ing") && containsVowel(word, "ing")) {
-    return step1BNext(
-        word.substring(0, word.length - 3)
-    );
+    return step1BNext(word.substring(0, word.length - 3));
   }
 
   return word;
@@ -133,7 +133,7 @@ function step2(word: string): string {
     "biliti": "ble"
   };
 
-  return substituteKeyWithPair(subs, word) || word;
+  return substituteKeyWithPair(subs, word);
 }
 
 function step3(word: string): string {
@@ -148,16 +148,16 @@ function step3(word: string): string {
     "ness": ""
   };
 
-  return substituteKeyWithPair(subs, word) || word;
+  return substituteKeyWithPair(subs, word);
 }
 
 function step4(word: string): string {
-  if (measure(word) < 1) return word;
+  if (measure(word) < 2) return word;
   const subs: { [key: string]: string } = {
-    "al": "",
     "ance": "",
     "ence": "",
-    "er": "",
+    // NOTE: NON-STANDARD
+    // "er": "",
     "ic": "",
     "able": "",
     "ible": "",
@@ -175,7 +175,7 @@ function step4(word: string): string {
     "ize": ""
   };
 
-  return substituteKeyWithPair(subs, word) || word;
+  return substituteKeyWithPair(subs, word);
 }
 
 
@@ -187,3 +187,5 @@ export default function stem(word: string): string {
   let stemmed = stemmed4;
   return stemmed;
 }
+
+console.log(stem("horses"));
