@@ -156,9 +156,12 @@ function step4(word: string): string {
   const subs: { [key: string]: string } = {
     "ance": "",
     "ence": "",
+
     // NOTE: NON-STANDARD
     "er": "",
-    "ic": "",
+    "c": "ce",
+    //////////////////////
+
     "able": "",
     "ible": "",
     "ant": "",
