@@ -39,7 +39,7 @@ function containsVowel(str: string, suffix?: string): boolean {
 }
 
 function hasDoubleConsonant(stem: string): boolean {
-  const doubleConsonants = ['bb', 'cc', 'dd', 'ff', 'gg', 'hh', 'jj', 'kk', 'll', 'mm',
+  const doubleConsonants: Array<String> = ['bb', 'cc', 'dd', 'ff', 'gg', 'hh', 'jj', 'kk', 'll', 'mm',
                             'nn', 'pp', 'qq', 'rr', 'tt', 'vv', 'ww', 'xx', 'yy', 'zz'];
   const lastTwoChars = stem.slice(-2).toLowerCase();
   return doubleConsonants.includes(lastTwoChars) && !['l', 's', 'z'].includes(lastTwoChars[0]);
