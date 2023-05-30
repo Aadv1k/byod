@@ -1,0 +1,28 @@
+{
+  "name": "@byod/types",
+  "version": "0.0.0",
+  "description": "the types for all the components",
+  "types": "./types/index.d.ts",
+  "keywords": [
+    "types",
+    "typescript",
+    "typesafe"
+  ],
+  "author": "aadv1k <aadv1k@outlook.com>",
+  "homepage": "https://github.com/Aadv1k/byod#readme",
+  "license": "MIT",
+  "types": "./",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aadv1k/byod.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Aadv1k/byod/issues"
+  }
+}
