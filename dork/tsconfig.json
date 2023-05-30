@@ -1,10 +1,7 @@
 {
   "extends": "../config/tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "paths": {
-      "@byod/types/*": ["../types/types/"]
-    }
+    "outDir": "./dist"
   },
   "include": ["./lib/**/*.ts"]
 }

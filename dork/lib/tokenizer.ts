@@ -1,4 +1,4 @@
-import { Token, TokenType, FilterToken, WordToken, Filters}  from "@byod/types/dork/tokenizer";
+import { Token, TokenType, FilterToken, WordToken, Filters}  from "@byod/types";
 
 function parseFilter(filter: string): FilterToken {
   const [lhs, rhs] = filter.split(":");
@@ -10,7 +10,7 @@ function parseFilter(filter: string): FilterToken {
   
   return {
     type: TokenType.filter,
-    lhs: lhs,
+    lhs: Filters[lhs as keyof typeof Filters],
     rhs: rhs, 
     word: filter
   } 

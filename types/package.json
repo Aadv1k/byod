@@ -2,7 +2,7 @@
   "name": "@byod/types",
   "version": "0.0.0",
   "description": "the types for all the components",
-  "types": "./types/index.d.ts",
+  "main": "./dist/index.js",
   "keywords": [
     "types",
     "typescript",
