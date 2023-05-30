@@ -56,8 +56,6 @@ const query = "bitcoin pricing data 2023 language:en-in format:SNo,Price"
 tokenize(query);
 stem("tempting") === stem("temptation") // true;
 ```
-
-
 ## Bootstrap
 
 ```shell
