@@ -104,8 +104,8 @@ function parse(tokens: Array<Token>): SearchIntent {
   }
   return blob;
 }
-const query = `sports news include:nfl,sports_league before:2023-01-01 format:SNo,TeamName,Points`
-// "bitcoin pricing data 2023 language:en-in format:SNo,Price"
+//const query = `sports news include:nfl,sports_league before:2023-01-01 format:SNo,TeamName,Points`
+const query = "bitcoin pricing data 2023 language:en-in format:SNo,Price"
 // get cool news data include:"covid","coronavirus"
 const output = parse(tokenize(query));
 
