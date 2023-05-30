@@ -169,7 +169,10 @@ function step4(word: string): string {
     "iti": "",
     "ous": "",
     "ive": "",
-    "ize": ""
+    "ize": "",
+
+    // NON-STANDARD
+    "ing": ""
   };
 
   return substituteKeyWithPair(subs, word);

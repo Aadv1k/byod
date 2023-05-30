@@ -30,3 +30,26 @@ The way we achieve this is a 2-step process.
 2. Parsing
     1. With the list of tokens, remove all "filler" words eg: prepositions, conjuations etc, put them into `keywords`
     2. The, parse through the filters with their appropriate logic, eg `-site:cnet.*`
+
+## Usage
+
+By default we export the parser.
+
+```typescript
+import dork from "@byod/dork" 
+
+const query = "bitcoin pricing data 2023 language:en-in format:SNo,Price"
+
+dork(query);
+```
+
+Optionally, you can also access the stemmer and the tokenizer for the module
+
+```typescript
+import { stem, tokenize } from "@byod/dork" 
+
+const query = "bitcoin pricing data 2023 language:en-in format:SNo,Price"
+
+tokenize(query);
+stem("tempting") === stem("temptation") // true;
+```

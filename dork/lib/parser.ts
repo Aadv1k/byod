@@ -40,7 +40,7 @@ function parseDate(dt: string): Date {
   return new Date(dt);
 }
 
-function parse(tokens: Array<Token>): SearchIntent {
+export default function parse(tokens: Array<Token>): SearchIntent {
   const blob = {
     summary: tokens.filter(e => e.type === "word").map((e: any) => e.word).join(" "),
     keywords: [],
@@ -104,9 +104,3 @@ function parse(tokens: Array<Token>): SearchIntent {
   }
   return blob;
 }
-//const query = `sports news include:nfl,sports_league before:2023-01-01 format:SNo,TeamName,Points`
-const query = "bitcoin pricing data 2023 language:en-in format:SNo,Price"
-// get cool news data include:"covid","coronavirus"
-const output = parse(tokenize(query));
-
-console.log(util.inspect(output, {showHidden: false, depth: null, colors: true}))

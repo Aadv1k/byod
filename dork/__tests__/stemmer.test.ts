@@ -8,6 +8,8 @@ describe("tests for the porter stemmer implementation", () => {
         { input: "playing", expected: "plai" },
         { input: "jumped", expected: "jump" },
         { input: "eating", expected: "eat" },
+        { input: "tempting", expected: "tempt" },
+        { input: "temptation", expected: "tempt" },
 
         { input: "brightest", expected: "bright" },
 
