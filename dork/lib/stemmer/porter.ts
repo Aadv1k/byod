@@ -159,7 +159,6 @@ function step4(word: string): string {
 
     // NOTE: NON-STANDARD
     "er": "",
-    "c": "ce",
     //////////////////////
 
     "able": "",
@@ -181,12 +180,17 @@ function step4(word: string): string {
   return substituteKeyWithPair(subs, word);
 }
 
+function step5(word: string): string {
+  return substituteKeyWithPair({"c": "ce"}, word);
+}
+
 
 export default function stem(word: string): string {
   let stemmed1 = step1C(step1B(step1A(word)));
   let stemmed2 = step2(stemmed1)
   let stemmed3 = step3(stemmed2)
   let stemmed4 = step4(stemmed3)
-  let stemmed = stemmed4;
+  let stemmed5 = step5(stemmed4)
+  let stemmed = stemmed5;
   return stemmed;
 }

@@ -1,25 +1,20 @@
-import { Token, TokenType, FilterToken, WordToken, FilterType}  from "@byod/types";
+import { Token, TokenType, FilterToken, WordToken }  from "@byod/types";
+import stem from "./stemmer/porter";
 
 function parseFilter(filter: string): FilterToken {
   const [lhs, rhs] = filter.split(":");
-  let filters = Object.keys(FilterType);
 
-  if (!filters.includes(lhs)) {
-    throw new Error(`invalid filter: ${lhs}`)
-  }
-  
   return {
     type: TokenType.filter,
-    lhs: FilterType[lhs as keyof typeof FilterType],
-    rhs: rhs, 
-    word: filter
+    lhs,
+    rhs, 
   } 
 }
 
 function parseWord(word: string): WordToken {
   return {
     type: TokenType.word,
-    word: word
+    word: stem(word)
   }
 }
 
