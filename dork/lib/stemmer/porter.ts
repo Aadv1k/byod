@@ -156,11 +156,6 @@ function step4(word: string): string {
   const subs: { [key: string]: string } = {
     "ance": "",
     "ence": "",
-
-    // NOTE: NON-STANDARD
-    "er": "",
-    //////////////////////
-
     "able": "",
     "ible": "",
     "ant": "",
@@ -186,7 +181,7 @@ function step5(word: string): string {
 
 
 export default function stem(word: string): string {
-  let stemmed1 = step1C(step1B(step1A(word)));
+  let stemmed1 = step1C(step1B(step1A(word.toLowerCase())));
   let stemmed2 = step2(stemmed1)
   let stemmed3 = step3(stemmed2)
   let stemmed4 = step4(stemmed3)
