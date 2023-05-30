@@ -40,7 +40,7 @@ describe("Tokenize", () => {
       },
       {
         type: "word",
-        word: "word_with_special-characters"
+        word: "word_with_special-character"
       }
     ];
 

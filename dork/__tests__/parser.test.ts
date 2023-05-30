@@ -1,44 +1,29 @@
-import { test, describe } from "@jest/globals";
+import { test, describe, expect } from "@jest/globals";
 
+import dork from "../lib";
 
-const outputs = [
-    {
-        intent: 'Bitcoin pricing data',
-        filters: [],
-        sorts: []
-    },
-
-    {
-
-        intent: 'Bitcoin pricing data',
-        filters: [
-            {
-                type: 'exclude',
-                keyword: 'news'
-            }
-        ],
-        sorts: []
-    },
-
-    {
-        intent: 'Bitcoin pricing data',
-        filters: [
-            {
-                type: 'date',
-                before: '2023-12-31',
-                after: '2012-01-01'
-            }
-        ],
-        sorts: []
-    },
-]
 
 describe("tests for the query parser", () => {
-  test.todo('query: `bitcoin pricing data`');
-  test.todo('query: `bitcoin pricing data exclude:news`');
-  test.todo('query: `bitcoin pricing data after:2012-01-01 before:2023-12-31`');
-  test.todo(`news data include:"covid","coronavirus"`)
-  test.todo(`covid news data -site:cnet.com after:2019`)
-  test.todo(`sports news include:nfl,"sports league" after:2023-01-01 format:SNo-decimal,TeamName-string,Points-integer`)
-  test.todo(`news related to apple stock sort by views include:appl,"apple"`)
+  test('keywords are being extracted correctly', () => {
+    const i = dork(`bitcoin pricing data`);
+    expect(i.keywords).toEqual(["bitcoin", "price", "data"])
+  });
+  test(`the filters are being extracted`, () => {
+    const i = dork(`news data include:"covid","coronavirus"`);
+    expect(i.filters).toEqual([
+        {
+            type: "include",
+            data: ["covid", "coronavirus"]
+        }
+    ])
+
+  })
+  test("if larger queries are being handled", () => {
+    const i = dork(`sports news include:nfl,"sports_league" format:SNo,TeamName,Points`)
+    expect(i.keywords).toEqual(["sport", "new"])
+    expect(i.filters).toEqual([
+        {type: "include", data: ["nfl", "sports_league"]},
+        {type: "format", data: ["SNo","TeamName","Points"]},
+    ])
+  })
 })
