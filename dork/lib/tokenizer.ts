@@ -1,8 +1,8 @@
-import { Token, TokenType, FilterToken, WordToken, Filters}  from "@byod/types";
+import { Token, TokenType, FilterToken, WordToken, FilterType}  from "@byod/types";
 
 function parseFilter(filter: string): FilterToken {
   const [lhs, rhs] = filter.split(":");
-  const filters = Object.keys(Filters);
+  let filters = Object.keys(FilterType);
 
   if (!filters.includes(lhs)) {
     throw new Error(`invalid filter: ${lhs}`)
@@ -10,7 +10,7 @@ function parseFilter(filter: string): FilterToken {
   
   return {
     type: TokenType.filter,
-    lhs: Filters[lhs as keyof typeof Filters],
+    lhs: FilterType[lhs as keyof typeof FilterType],
     rhs: rhs, 
     word: filter
   } 

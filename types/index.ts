@@ -1,7 +1,7 @@
-export enum Filters {
+export enum FilterType {
     include = "include",
     exclude = "exclude",
-    "-site" = "-site",
+    excludeSite = "-site",
     format = "format"
 }
 
@@ -12,7 +12,7 @@ export enum TokenType {
 }
 export interface FilterToken {
     type: TokenType;
-    lhs: Filters;
+    lhs: FilterType;
     rhs: string;
     word: string;
 }
