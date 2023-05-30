@@ -1,23 +1,27 @@
-export enum FilterType {
-    include = "include",
-    exclude = "exclude",
-    excludeSite = "-site",
-    format = "format"
+export type Token = FilterToken | WordToken;
+
+export interface GenericFilter {
+  type: string,
+  data: Array<string>
 }
 
-export type Token = FilterToken | WordToken;
+export interface SearchIntent {
+  summary: string,
+  keywords: Array<string>,
+  filters: Array<GenericFilter>
+}
+
 export enum TokenType {
     word = "word",
     filter = "filter"
 }
+
 export interface FilterToken {
     type: TokenType;
-    lhs: FilterType;
+    lhs: string;
     rhs: string;
-    word: string;
 }
 export interface WordToken {
     type: TokenType;
     word: string;
-    category?: string;
 }

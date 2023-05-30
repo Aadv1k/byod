@@ -8,13 +8,11 @@ describe("Tokenize", () => {
         type: "filter",
         lhs: "include",
         rhs: "keyword1",
-        word: "include:keyword1"
       },
       {
         type: "filter",
         lhs: "exclude",
         rhs: "keyword2",
-        word: "exclude:keyword2"
       },
       {
         type: "word",
@@ -34,13 +32,11 @@ describe("Tokenize", () => {
         type: "filter",
         lhs: "format",
         rhs: "pdf",
-        word: "format:pdf"
       },
       {
         type: "filter",
         lhs: "-site",
         rhs: '"example.com"',
-        word: '-site:"example.com"'
       },
       {
         type: "word",

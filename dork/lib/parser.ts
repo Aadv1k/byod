@@ -1,21 +1,9 @@
-import { Token }  from "@byod/types";
+import { Token, GenericFilter, SearchIntent }  from "@byod/types";
 import util from "node:util"
 
 import { isCommonNoun, isFillerWord } from "./grammar";
 
 import tokenize from "./tokenizer";
-
-interface GenericFilter {
-  type: string,
-  data: Array<string>
-}
-
-interface SearchIntent {
-  summary: string,
-  keywords: Array<string>,
-  filters: Array<GenericFilter>
-}
-
 function isRealYear(year: number): boolean {
   const currentYear = new Date().getFullYear(); // Get the current year
 
