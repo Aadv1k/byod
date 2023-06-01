@@ -17,7 +17,8 @@ on
 as	
 at	
 from	
-by	
+by
+do
 if
 about	
 than	

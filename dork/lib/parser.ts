@@ -1,6 +1,8 @@
 import { Token, GenericFilter, SearchIntent, FilterToken, WordToken }  from "@byod/types";
 import util from "node:util"
 
+import stem from "./stemmer/porter";
+
 import { isCommonNoun, isFillerWord } from "./grammar";
 
 import tokenize from "./tokenizer";
@@ -81,7 +83,9 @@ export default function parse(tokens: Array<Token>): SearchIntent {
           i+=offset;
           continue;
         }
-        blob.keywords.push(token.word.trim());
+        if (isCommonNoun(stem(token.word))) continue;
+
+        blob.keywords.push(token.word);
         break;
       case "filter": 
         token = token as FilterToken;

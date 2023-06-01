@@ -7,7 +7,7 @@ export function isFillerWord(word: string)  {
  const wordlist = fs.readFileSync(
         path.join(__dirname, "../data/fillers.txt"), "utf-8")
         .split("\r\n").map(e => e.trim())
- return wordlist.includes(word)
+  return wordlist.includes(word);
 }
 
 export function isCommonNoun(word: string): boolean {
