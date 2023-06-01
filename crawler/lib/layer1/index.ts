@@ -78,13 +78,13 @@ export default class Crawler extends EventEmitter {
     return links.map((link, idx) => {
           return {
               title: titles[idx],
-              keywords: titles[idx].trim().split(" ").map(e => e.toLowerCase()),
+              keywords: titles[idx].trim().split(" ").map((e: string) => e.toLowerCase()),
               download: `https://kaggle.com${link}/download`,
           }
       })
   }
 
-  private async fetchAndCacheQuery(): Array<ScraperCache> {
+  private async fetchAndCacheQuery(): Promise<Array<ScraperCache>> {
       const data = await this.fetchAll();
       this.cache(data);
       return data;
@@ -94,7 +94,7 @@ export default class Crawler extends EventEmitter {
      if (!fs.existsSync(this.cacheDir)) fs.mkdirSync(this.cacheDir)
      const data = providedData ?? await this.fetchAll();
      fs.writeFileSync(this.cachePath, JSON.stringify(data))
-     console.log(`[INFO] fetched and wrote data to ${this.cachePath}`)
+     return this.cachePath;
   }
 
   async fetchAll() {
@@ -102,19 +102,19 @@ export default class Crawler extends EventEmitter {
     return kgle;
   }
 
-  async get(): Promise<ScraperCache> {
+  async get(): Promise<ScraperCache | null> {
      if (!fs.existsSync(this.cachePath)) {
          let data = await this.fetchAndCacheQuery();
          const target = data.find(elem => {
              return elem.keywords.some(k => this.query.keywords.includes(k))
          })
-         return target;
+         return target ?? null;
      }
 
 
      let data = JSON.parse(fs.readFileSync(this.cachePath, "utf-8"));
-     let target = data.find(elem =>
-         elem.keywords.some(k => this.query.keywords.includes(k)))
+     let target = data.find((elem: any) =>
+         elem.keywords.some((k: string) => this.query.keywords.includes(k)))
 
      if (target) {
          console.log(`[INFO] found match for "${this.query.summary}": ${this.cachePath}`)
@@ -122,8 +122,8 @@ export default class Crawler extends EventEmitter {
      } 
 
      data = await this.fetchAndCacheQuery()
-     target = data.find(elem => {
-          return elem.keywords.some(k => this.query.keywords.includes(k))
+     target = data.find((elem: any)=> {
+          return elem.keywords.some((k: string) => this.query.keywords.includes(k))
       })
       return target;
   }
