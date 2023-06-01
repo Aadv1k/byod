@@ -34,7 +34,7 @@
     "url": "https://github.com/Aadv1k/byod/issues"
   },
   "dependencies": {
-    "@byod/dork": "file:../dork",
+    "@byod/dork": "^0.0.0",
     "axios": "^1.4.0",
     "puppeteer": "^20.4.0"
   },
