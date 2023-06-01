@@ -8,13 +8,15 @@ import { CACHE_PATH } from "../const";
 import path from "node:path";
 import fs from "node:fs";
 
+import crypto from "node:crypto";
+
 interface CrawlerStatus {
   status: "progress" | "success",
   message: string,
   data?: any
 }
 
-interface CrawlerIndex {
+interface ScraperCache {
   title: string,
   keywords: Array<string>,
   download: string
@@ -24,17 +26,26 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function md5(text: string): string {
+    let hash = crypto.createHash("md5").update(text).digest("hex");
+    return hash;
+}
+
 export default class Crawler extends EventEmitter {
   query: SearchIntent;
   cacheDir: string;
+  cacheFileName: string;
+  cachePath: string;
 
   constructor(query: SearchIntent) {
     super();
     this.query = query;
     this.cacheDir = path.join(__dirname, CACHE_PATH);
+    this.cacheFileName = `./byod-${md5(this.query.keywords.join(""))}.json`
+    this.cachePath = path.join(this.cacheDir, this.cacheFileName);
   }
 
-  async fetchKaggle(): Promise<Array<CrawlerIndex>> {
+  private async fetchKaggle(): Promise<Array<ScraperCache>> {
     const kaggleQuery = encodeURIComponent(this.query.keywords.join(" "));
     const kaggleFilters = encodeURIComponent("datasetFileTypes:csv") + "+" +
                       encodeURIComponent("datasetLicense:Commercial")
@@ -67,16 +78,53 @@ export default class Crawler extends EventEmitter {
     return links.map((link, idx) => {
           return {
               title: titles[idx],
-              keywords: titles[idx].trim().split(" "),
+              keywords: titles[idx].trim().split(" ").map(e => e.toLowerCase()),
               download: `https://kaggle.com${link}/download`,
           }
       })
   }
 
-  index(filepath?: string): void {
-     if (!fs.existsSync(this.cacheDir)) fs.mkdirSync(this.cacheDir)
-     filepath = filepath ?? "./byod-layer1.json"
-     const cachePath = path.join(this.cacheDir, filepath);
+  private async fetchAndCacheQuery(): Array<ScraperCache> {
+      const data = await this.fetchAll();
+      this.cache(data);
+      return data;
   }
 
+  private async cache(providedData?: any): Promise<string> {
+     if (!fs.existsSync(this.cacheDir)) fs.mkdirSync(this.cacheDir)
+     const data = providedData ?? await this.fetchAll();
+     fs.writeFileSync(this.cachePath, JSON.stringify(data))
+     console.log(`[INFO] fetched and wrote data to ${this.cachePath}`)
+  }
+
+  async fetchAll() {
+    const kgle = await this.fetchKaggle();
+    return kgle;
+  }
+
+  async get(): Promise<ScraperCache> {
+     if (!fs.existsSync(this.cachePath)) {
+         let data = await this.fetchAndCacheQuery();
+         const target = data.find(elem => {
+             return elem.keywords.some(k => this.query.keywords.includes(k))
+         })
+         return target;
+     }
+
+
+     let data = JSON.parse(fs.readFileSync(this.cachePath, "utf-8"));
+     let target = data.find(elem =>
+         elem.keywords.some(k => this.query.keywords.includes(k)))
+
+     if (target) {
+         console.log(`[INFO] found match for "${this.query.summary}": ${this.cachePath}`)
+         return target
+     } 
+
+     data = await this.fetchAndCacheQuery()
+     target = data.find(elem => {
+          return elem.keywords.some(k => this.query.keywords.includes(k))
+      })
+      return target;
+  }
 }
