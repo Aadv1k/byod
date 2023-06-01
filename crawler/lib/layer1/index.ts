@@ -113,13 +113,13 @@ export default class Crawler extends EventEmitter {
 
 
      let data = JSON.parse(fs.readFileSync(this.cachePath, "utf-8"));
+
      let target = data.find((elem: any) =>
          elem.keywords.some((k: string) => this.query.keywords.includes(k)))
 
      if (target) {
-         console.log(`[INFO] found match for "${this.query.summary}": ${this.cachePath}`)
          return target
-     } 
+     }
 
      data = await this.fetchAndCacheQuery()
      target = data.find((elem: any)=> {
