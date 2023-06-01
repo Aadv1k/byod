@@ -1,7 +1,7 @@
 import puppeteer, { Page, Puppeteer } from "puppeteer";
 import { EventEmitter } from "node:events";
 
-import { SearchIntent } from "@byod/types"
+import { SearchIntent, SearchMatch } from "@byod/types"
 
 import { CACHE_PATH } from "../const";
 
@@ -14,12 +14,6 @@ interface CrawlerStatus {
   status: "progress" | "success",
   message: string,
   data?: any
-}
-
-interface ScraperCache {
-  title: string,
-  keywords: Array<string>,
-  download: string
 }
 
 function sleep(ms: number): Promise<void> {
@@ -45,7 +39,7 @@ export default class Crawler extends EventEmitter {
     this.cachePath = path.join(this.cacheDir, this.cacheFileName);
   }
 
-  private async fetchKaggle(): Promise<Array<ScraperCache>> {
+  private async fetchKaggle(): Promise<Array<SearchMatch>> {
     const kaggleQuery = encodeURIComponent(this.query.keywords.join(" "));
     const kaggleFilters = encodeURIComponent("datasetFileTypes:csv") + "+" +
                       encodeURIComponent("datasetLicense:Commercial")
@@ -80,14 +74,23 @@ export default class Crawler extends EventEmitter {
               title: titles[idx],
               keywords: titles[idx].trim().split(" ").map((e: string) => e.toLowerCase()),
               download: `https://kaggle.com${link}/download`,
+              origin: `https://kaggle.com${link}`
           }
       })
   }
 
-  private async fetchAndCacheQuery(): Promise<Array<ScraperCache>> {
+  private async fetchAndCacheQuery(): Promise<Array<SearchMatch>> {
       const data = await this.fetchAll();
       this.cache(data);
       return data;
+  }
+
+  public static sortByKeywordMatches(matches: Array<SearchMatch>, keywords: Array<string>): Array<SearchMatch> {
+      return matches.sort((matchA, matchB) => {
+          const numMatchesA = matchA.keywords.filter(keyword => keywords.includes(keyword)).length;
+          const numMatchesB = matchB.keywords.filter(keyword => keywords.includes(keyword)).length;
+          return numMatchesB - numMatchesA; // Sort in descending order
+      });
   }
 
   private async cache(providedData?: any): Promise<string> {
@@ -102,29 +105,16 @@ export default class Crawler extends EventEmitter {
     return kgle;
   }
 
-  async get(): Promise<ScraperCache | null> {
+  async get(): Promise<Array<SearchMatch> | null> {
      if (!fs.existsSync(this.cachePath)) {
-         let data = await this.fetchAndCacheQuery();
-         const target = data.find(elem => {
-             return elem.keywords.some(k => this.query.keywords.includes(k))
-         })
-         return target ?? null;
+        let data = await this.fetchAndCacheQuery();
+        return data;
      }
-
 
      let data = JSON.parse(fs.readFileSync(this.cachePath, "utf-8"));
 
-     let target = data.find((elem: any) =>
-         elem.keywords.some((k: string) => this.query.keywords.includes(k)))
-
-     if (target) {
-         return target
-     }
-
+     if (data) return data;
      data = await this.fetchAndCacheQuery()
-     target = data.find((elem: any)=> {
-          return elem.keywords.some((k: string) => this.query.keywords.includes(k))
-      })
-      return target;
+      return data;
   }
 }
