@@ -14,7 +14,7 @@ function parseFilter(filter: string): FilterToken {
 function parseWord(word: string): WordToken {
   return {
     type: TokenType.word,
-    word: stem(word)
+    word: word
   }
 }
 
