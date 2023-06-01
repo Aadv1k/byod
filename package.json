@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "./dork/",
-    "./types/"
+    "./types/",
+    "./crawler"
   ],
   "devDependencies": {
     "lerna": "^6.6.2"
