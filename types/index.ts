@@ -5,6 +5,8 @@ export interface GenericFilter {
   data: Array<string | Date>
 }
 
+export type Layer1Loader = (i: SearchIntent) => Promise<Array<SearchMatch>>;
+
 export interface GenericSorter {
     type: string,
     condition?: string,

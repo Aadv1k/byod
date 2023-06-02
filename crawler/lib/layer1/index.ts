@@ -1,20 +1,18 @@
 import puppeteer, { Page, Puppeteer } from "puppeteer";
-import { SearchIntent, SearchMatch, BaseCrawler } from "@byod/types"
+import { SearchIntent, SearchMatch, BaseCrawler, Layer1Loader } from "@byod/types"
 
 import { md5 } from "../utils";
 
-type Layer1Fetcher = (i: SearchIntent) => Promise<Array<SearchMatch>>;
-
 export default class Crawler implements BaseCrawler {
   query: SearchIntent;
-  private fetchers: Array<Layer1Fetcher>;
+  private fetchers: Array<Layer1Loader>;
 
   constructor(query: SearchIntent) {
     this.query = query;
     this.fetchers = [];
   }
 
-  public register(i: Layer1Fetcher): void {
+  public register(i: Layer1Loader): void {
       this.fetchers.push(i);
   }
 

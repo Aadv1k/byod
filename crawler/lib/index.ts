@@ -6,24 +6,23 @@ import { kaggle, google } from "./layer1/loaders";
 
 import CacheHandler from "./CacheHandler";
 
-
 const Cache = new CacheHandler();
 
-async function search(query: string): Promise<Array<SearchMatch>> {
+export { layer1Resolver, kaggle as kaggleLoader, google as googleLoader } 
+
+export default async function (query: string): Promise<Array<SearchMatch>> {
   let intent = dork(query);
   const layer1 = new layer1Resolver(intent);
 
   layer1.register(kaggle);
   layer1.register(google);
-
   const foundCache = Cache.get(intent.keywords.join(""));
+
   if (foundCache.length === 0) {
-    const data = await layer1.crawl();
+    let data = await layer1.crawl();
     Cache.cache(intent.keywords.join(""), data);
     return data;
   }
 
   return foundCache;
 }
-
-console.log(search("crypto pricing data"));
