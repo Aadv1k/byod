@@ -1,20 +1,20 @@
-import puppeteer, { Page, Puppeteer } from "puppeteer";
-
 import { SearchMatch } from "@byod/types"
 
 import dork from "@byod/dork";
 import layer1Resolver from "./layer1"
-import { kaggle } from "./layer1/loaders";
+import { kaggle, google } from "./layer1/loaders";
 
 import CacheHandler from "./CacheHandler";
 
 
 const Cache = new CacheHandler();
 
-async function scrape(query: string): Promise<Array<SearchMatch>> {
+async function search(query: string): Promise<Array<SearchMatch>> {
   let intent = dork(query);
   const layer1 = new layer1Resolver(intent);
+
   layer1.register(kaggle);
+  layer1.register(google);
 
   const foundCache = Cache.get(intent.keywords.join(""));
   if (foundCache.length === 0) {
@@ -26,8 +26,4 @@ async function scrape(query: string): Promise<Array<SearchMatch>> {
   return foundCache;
 }
 
-(async () => {
-  const data = await scrape("bitcoin pricing data");
-  console.log(data);
-})();
-
+console.log(search("crypto pricing data"));
