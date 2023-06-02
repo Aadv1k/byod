@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@byod/dork": "^0.0.0",
+    "@byod/types": "^0.0.0",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "puppeteer": "^20.4.0"

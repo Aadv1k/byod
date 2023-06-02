@@ -5,7 +5,6 @@
   "packages": [
     "./dork/",
     "./types/",
-    "./crawler/",
-    "./logger/"
+    "./crawler/"
   ]
 }

@@ -4,8 +4,7 @@
   "workspaces": [
     "./dork/",
     "./types/",
-    "./crawler",
-    "./logger/"
+    "./crawler"
   ],
   "devDependencies": {
     "lerna": "^6.6.2"
