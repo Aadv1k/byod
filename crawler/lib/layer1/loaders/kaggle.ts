@@ -3,6 +3,8 @@ import { SearchIntent, SearchMatch } from "@byod/types"
 
 import { sleep } from "../../utils";
 
+const PAGE_TIMEOUT = 1500;
+
 export default async function (query: SearchIntent): Promise<Array<SearchMatch>> {
     const kaggleQuery = encodeURIComponent(query.keywords.join(" "));
     const kaggleFilters = encodeURIComponent("datasetFileTypes:csv") + "+" +
@@ -11,12 +13,14 @@ export default async function (query: SearchIntent): Promise<Array<SearchMatch>>
 
     const kaggleTarget = ".sc-dQDPHY"
     
+    try {
+
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
 
     await page.setJavaScriptEnabled(true);
     await page.goto(kaggleSearch);
-    await sleep(1_500);
+    await sleep(PAGE_TIMEOUT);
 
     await page.waitForSelector(kaggleTarget);
     const ulElement = await page.$(kaggleTarget);
@@ -41,4 +45,8 @@ export default async function (query: SearchIntent): Promise<Array<SearchMatch>>
               origin: `https://kaggle.com${link}`
           }
       })
+  } catch (error) {
+      console.error(error);
+      return [];
   }
+}

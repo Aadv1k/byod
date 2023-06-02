@@ -1,11 +1,6 @@
 import puppeteer, { Page, Puppeteer } from "puppeteer";
 import { SearchIntent, SearchMatch, BaseCrawler } from "@byod/types"
 
-import { CACHE_PATH } from "../const";
-
-import path from "node:path";
-import fs from "node:fs";
-
 import { md5 } from "../utils";
 
 type Layer1Fetcher = (i: SearchIntent) => Promise<Array<SearchMatch>>;

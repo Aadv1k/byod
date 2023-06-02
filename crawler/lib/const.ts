@@ -1,1 +1,1 @@
-export const CACHE_PATH = ".byod-cache"
+export const CACHE_DIR = ".byod-cache"
