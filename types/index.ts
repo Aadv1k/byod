@@ -18,6 +18,20 @@ export interface SearchIntent {
   sorters: Array<GenericSorter>
 }
 
+export interface BaseCrawler {
+    query: SearchIntent;
+    crawl(): Promise<Array<SearchMatch>>
+}
+
+
+export interface SearchMatch {
+  title: string,
+  keywords: Array<string>,
+  download: string,
+  date?: string,
+  origin: string
+}
+
 export enum TokenType {
     word = "word",
     filter = "filter"
