@@ -118,8 +118,6 @@ export default function parse(tokens: Array<Token>): SearchIntent {
               i+=nextIdx;
               continue;
           }
-
-
          if (isKeyword(token.word)) blob.keywords.push(token.word);
         break;
       case "filter": 
