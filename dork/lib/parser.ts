@@ -1,4 +1,4 @@
-import { Token, GenericFilter, SearchIntent, FilterToken, WordToken }  from "@byod/types";
+import { Token, GenericFilter, SearchIntent, FilterToken, WordToken, ActionType }  from "@byod/types";
 import util from "node:util"
 
 import stem from "./stemmer/porter";
@@ -6,13 +6,6 @@ import stem from "./stemmer/porter";
 import { isCommonNoun, isFillerWord, isVerb, isAdjective} from "./grammar";
 
 import tokenize from "./tokenizer";
-
-enum ActionType {
-  CREATE = "create",
-  UPDATE = "update",
-  DELETE = "delete",
-  NONE = "none"
-}
 
 function actionType(word: string): ActionType {
   const normalizedInput = word.toLowerCase().trim();
@@ -100,7 +93,6 @@ export default function parse(tokens: Array<Token>): SearchIntent {
             }
          }
 
-
          const action = actionType(token.word);
           if (action !== ActionType.NONE) {
               let actionBlob = {
@@ -108,19 +100,19 @@ export default function parse(tokens: Array<Token>): SearchIntent {
                   argument: "",
               }
               // NOTE: this is a bit sussy
-              const idx = tokens.slice(i+1, -1).findIndex(e => e.word === "column") + i + 1;
+              const idx = tokens.slice(i+1, -1).findIndex((e: any) => e.word === "column") + i + 1;
 
-              if (isKeyword(tokens[idx-1].word)) {
-                  actionBlob.argument = tokens[idx-1].word;
+              if (isKeyword((tokens[idx-1] as WordToken).word)) {
+                  actionBlob.argument = (tokens[idx-1] as WordToken).word;
                   blob.actions.push(actionBlob);
                   i+=idx-1;
                   continue;
               }
 
               let nextTokens = tokens.slice(idx+1, -1);
-              let nextIdx =  nextTokens.findIndex(e => isKeyword(e.word) && !isVerb(stem(e.word))) + idx + 1;
+              let nextIdx =  nextTokens.findIndex((e: any) => isKeyword(e.word) && !isVerb(stem(e.word))) + idx + 1;
 
-              actionBlob.argument = tokens[nextIdx].word;
+              actionBlob.argument = (tokens[nextIdx] as WordToken).word;
               blob.actions.push(actionBlob);
 
               i+=nextIdx;

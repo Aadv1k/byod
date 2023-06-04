@@ -5,6 +5,13 @@ export interface GenericFilter {
   data: Array<string | Date>
 }
 
+export enum ActionType {
+  CREATE = "create",
+  UPDATE = "update",
+  DELETE = "delete",
+  NONE = "none"
+}
+
 export type Layer1Loader = (i: SearchIntent) => Promise<Array<SearchMatch>>;
 
 export interface GenericSorter {
@@ -13,9 +20,15 @@ export interface GenericSorter {
     by?: string
 }
 
+export interface GenericAction {
+    type: ActionType,
+    argument: string
+}
+
 export interface SearchIntent {
   summary: string,
   keywords: Array<string>,
+  actions: Array<GenericAction>,
   filters: Array<GenericFilter>,
   sorters: Array<GenericSorter>
 }
