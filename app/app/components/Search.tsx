@@ -12,7 +12,8 @@ export default function Search() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        setLoading(true);
+        const formProps = Object.fromEntries(new FormData(e.currentTarget));
+        fetch("/api/v1/search?q=${encodeUriComponent(formProps.prompt)}")
     }
 
     return (
@@ -25,7 +26,7 @@ export default function Search() {
             <Logo variant={isDesktop ? "h4" : "h4"} />
 
             <Box as="form" display="flex" my={2} flexDirection="column" gap={2} onSubmit={handleSubmit}>
-                <TextField label="Provide a prompt" variant="outlined" w="full" size="small" />
+                <TextField name="prompt" required label="Provide a prompt" variant="outlined" w="full" size="small" />
 
                 <Stack alignItems="center" spacing={2} direction="row" justifyContent="center">
                 <Button variant="contained" loading={loading}  type="submit" disableElevation>search</Button>
