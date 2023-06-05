@@ -1,0 +1,20 @@
+import Logo from "./Logo" ;
+import { Box, TextField,  Button, Stack } from "@mui/material";
+
+export default function Search() {
+    return (
+        <Box w="100%" display="flex" flexDirection="column">
+            <Logo variant="h3" />
+            <Box as="form" display="flex" flexDirection="column">
+                <TextField label="Outlined" variant="outlined" w="full" />
+
+                <Stack alignItems="center" spacin={2}">
+                <Button variant="contained" style={{
+                    width: "120px"
+                }} disableElevation>search</Button>
+                    
+                </Stack>
+            </Box>
+        </Box>
+    )
+}
