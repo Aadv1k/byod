@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import * as csv from 'fast-csv';
 
-export default class {
+export default class CsvHandler {
   delem: string;
   csvData: Array<Array<string>>;
 

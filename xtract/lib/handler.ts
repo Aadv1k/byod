@@ -5,6 +5,8 @@ import AdmZip from 'adm-zip';
 
 import * as FileType from 'file-type';
 
+import  CsvHandler from "./handlers/csv";
+
 function extractFirstFile(filePath: string, to: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const zip = new AdmZip(filePath);
@@ -41,13 +43,21 @@ export default class Handler {
         this.handle(outfp);
     }
 
-    async handle(filepath: string) {
+    // TODO: `handler.handle` is not typesafe
+    async handle(filepath: string): Promise<any> {
         const ext = filepath.split(".").pop();
         switch (ext) {
                 case "zip":
                   await this.handleZip(filepath);
                   break;
                 case "csv":
+                  let instance = new CsvHandler(",");
+                  await instance.fromFile(filepath);
+                  return instance;
+                  break;
+                case "xls":
+                case "xlsx":
+                  throw ".xls support not implemented";
                   break;
         }
     }

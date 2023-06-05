@@ -48,7 +48,9 @@ export default class Downloader {
     }
 
     clean() {
-        fs.rmdirSync(this.tmpdir);
+        fs.rmdirSync(this.tmpdir, {
+            recursive: true
+        });
     }
 
 }
