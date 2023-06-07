@@ -10,12 +10,11 @@ const Cache = new CacheHandler();
 
 export { layer1Resolver, kaggle as kaggleLoader, google as googleLoader } 
 
-export default async function (query: string): Promise<Array<SearchMatch>> {
+export default async function search(query: string): Promise<Array<SearchMatch>> {
   let intent = dork(query);
   const layer1 = new layer1Resolver(intent);
 
   layer1.register(kaggle);
-  layer1.register(google);
   const foundCache = Cache.get(intent.keywords.join(""));
 
   if (foundCache.length === 0) {
