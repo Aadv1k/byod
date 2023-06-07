@@ -142,8 +142,6 @@ export default function parse(tokens: Array<Token>): SearchIntent {
         throw new Error("something went wrong in the parse function of the dork/lib/parser")
     }
   }
-
-  console.log(JSON.stringify(blob, null, 2));
   return blob;
 }
  
