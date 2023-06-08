@@ -2,10 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "./dork/",
-    "./types/",
-    "./crawler",
-    "./xtract"
+      "./*"
   ],
   "devDependencies": {
     "lerna": "^6.6.2"
