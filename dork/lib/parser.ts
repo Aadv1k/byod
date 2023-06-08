@@ -1,5 +1,4 @@
 import { Token, GenericFilter, SearchIntent, FilterToken, WordToken, ActionType }  from "@byod/types";
-import util from "node:util"
 
 import stem from "./stemmer/porter";
 
@@ -7,7 +6,7 @@ import { isCommonNoun, isFillerWord, isVerb, isAdjective} from "./grammar";
 
 import tokenize from "./tokenizer";
 
-function actionType(word: string): ActionType {
+function actionType(word: string) {
   const normalizedInput = word.toLowerCase().trim();
 
   const delKw = new Set(["drop", "remove", "delete", "pop"])
@@ -34,8 +33,6 @@ function isValidDate(d: string) {
   let ed = new Date(d)
   return ed instanceof Date;
 }
-
-
 
 function isRealYear(year: number): boolean {
   const currentYear = new Date().getFullYear();
@@ -94,13 +91,16 @@ export default function parse(tokens: Array<Token>): SearchIntent {
          }
 
          const action = actionType(token.word);
+
           if (action !== ActionType.NONE) {
               let actionBlob = {
                   type: action,
                   argument: "",
               }
               // NOTE: this is a bit sussy
-              const idx = tokens.slice(i+1, -1).findIndex((e: any) => e.word === "column") + i + 1;
+              const idx = tokens.slice(i+1, -1)
+                .findIndex((e: any) => e.word === "column") + i + 1;
+
 
               if (isKeyword((tokens[idx-1] as WordToken).word)) {
                   actionBlob.argument = (tokens[idx-1] as WordToken).word;

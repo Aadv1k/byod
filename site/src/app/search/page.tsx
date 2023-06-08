@@ -1,23 +1,22 @@
 import { redirect } from 'next/navigation';
 
-// import search from "@byod/crawler";
-
+import dork from "@byod/dork";
 
 export default function ({
     params,
     searchParams
 })  {
 
-
     if (!searchParams["q"]) {
         redirect("/");
         return;
     }
 
+
     return (
-        <h1>
-            test 123
-        </h1>
+        <code>
+            {JSON.stringify(dork(searchParams["q"]), null, 2)}
+        </code>
     )
 }
 
