@@ -16,7 +16,8 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "lib",
+    "./data"
   ],
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "tsc && cp ./lib/data/ ./dist/data",
     "dev": "tsc --watch"
   },
   "bugs": {
