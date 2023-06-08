@@ -18,7 +18,16 @@ function errorResponse(error: any, details: string) {
     })
 }
 
-export function GET(req) {
-    return errorResponse(errors.badReq, "expected query param `q`");
+export async function GET(req) {
+    const url = new URL(req.url);
+    const query = url.searchParams.get("q") || url.params.get("query")
+
+    if (!query || query.length === 0) {
+        return errorResponse(errors.badReq, "expected query param `q`");
+    }
+
+
+    const matches = await search(query);
+    return NextResponse.json(matches);
 }
 

@@ -1,30 +1,78 @@
-import { redirect } from 'next/navigation';
+"use client"
 
-export default async function ({
-    params,
-    searchParams
-})  {
+import { ThemeProvider } from '@mui/material/styles';
 
-    if (!searchParams["q"]) {
-        redirect("/");
-        return;
+import MuiTheme from "@/components/MuiTheme";
+
+import { redirect } from 'next/router';
+import { useState, useEffect } from 'react';
+
+import { Paper, Stack, Typography, Chip } from "@mui/material";
+
+export default function MyServerComponent({ params, searchParams }) {
+  const [results, setResults] = useState(null);
+
+  useEffect(() => {
+    const query = searchParams?.q || searchParams?.query;
+
+    if (!query) {
+      redirect("/")
+      return;
     }
 
+    fetch(`/api/v1/search?q=${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setResults(data);
+      });
+  }, [searchParams]);
 
-    const data = await search(searchParams["q"]);
+  return (
+        <ThemeProvider theme={MuiTheme}>
+    <Stack as="ul" direction="column" spacing={1} sx={{
+        maxWidth: "800px",
+        padding: "1.2rem",
+    }}>
+      {results &&
+        results.map((result, index) => (
+          <Paper
+              as="li"
+              key={index}
+              elevation={2}
+              sx={{
+                  paddingBlock: "1.2rem",
+                  paddingInline: "1rem",
+              }}
+          >
 
-    return (
-        <ul className="flex flex-col" onClick={(e) => {
-            console.log("clicked");
-        }}>
-            {data.map((e, i) => {
-                return (
-                    <li key={i}>
-                        {e.title}
-                    </li>
-                )
-            })
-            }
-        </ul>
-    )
+
+            <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            wrap="wrap"
+            >
+
+                <Typography variant="h6">
+                    {result.title}
+                </Typography>
+
+                <Chip
+                    label={(new URL(result.origin)).host}
+                    component="a"
+                    href={(new URL(result.origin)).href}
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    sx={{
+                        borderRadius: ".3rem"
+                    }}
+                    clickable
+                />
+            </Stack>
+          </Paper>
+        ))}
+    </Stack>
+        </ThemeProvider>
+  );
 }
