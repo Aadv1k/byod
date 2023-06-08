@@ -1,5 +1,10 @@
+"use client"
+
+import PrimarySearch from "@/components/PrimarySearch";
+
+
 export default function Home() {
   return (
-      <h1>welcome to the glorious index sir!</h1>
+      <PrimarySearch />
   )
 }

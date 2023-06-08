@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import MuiTheme from "@/components/MuiTheme";
 
-import { redirect } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import { Paper, Stack, Typography, Chip, Button, CircularProgress} from "@mui/material";
@@ -13,17 +13,20 @@ import { Paper, Stack, Typography, Chip, Button, CircularProgress} from "@mui/ma
 import Search from "@/components/Search";
 
 
-export default function MyServerComponent({ params, searchParams }) {
-  const [results, setResults] = useState(null);
+export default function SearchPage({ params, searchParams }) {
+    const [results, setResults] = useState(null);
+    const router = useRouter();
+
+    // just roll with it
+    var query = searchParams?.q || searchParams?.query;
+    if (!query) {
+        router.push("/")
+        return;
+    }
 
 
   useEffect(() => {
-    const query = searchParams?.q || searchParams?.query;
 
-    if (!query) {
-      redirect("/")
-      return;
-    }
 
     fetch(`/api/v1/search?q=${query}`)
       .then((res) => res.json())
@@ -39,12 +42,11 @@ export default function MyServerComponent({ params, searchParams }) {
     <Stack direction="column" spacing={1} sx={{
         maxWidth: "900px",
         minHeight: "100vh",
-        justifyContent: "center",
         padding: "1.2rem",
     }}>
 
+    <Search defaultValue={query} />
 
-      <Search />
 
       {!results && <CircularProgress
                        sx={{
