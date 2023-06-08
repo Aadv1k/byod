@@ -5,8 +5,7 @@
     "./dork/",
     "./types/",
     "./crawler",
-    "./xtract",
-    "./app"
+    "./xtract"
   ],
   "devDependencies": {
     "lerna": "^6.6.2"

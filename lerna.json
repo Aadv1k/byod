@@ -6,7 +6,6 @@
     "./dork/",
     "./types/",
     "./crawler/",
-    "./xtract",
-    "./app/"
+    "./xtract"
   ]
 }
