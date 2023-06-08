@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import dork from "@byod/dork";
-
-export default function ({
+export default async function ({
     params,
     searchParams
 })  {
@@ -13,10 +11,20 @@ export default function ({
     }
 
 
+    const data = await search(searchParams["q"]);
+
     return (
-        <code>
-            {JSON.stringify(dork(searchParams["q"]), null, 2)}
-        </code>
+        <ul className="flex flex-col" onClick={(e) => {
+            console.log("clicked");
+        }}>
+            {data.map((e, i) => {
+                return (
+                    <li key={i}>
+                        {e.title}
+                    </li>
+                )
+            })
+            }
+        </ul>
     )
 }
-
